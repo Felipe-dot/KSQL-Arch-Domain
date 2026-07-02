@@ -1,4 +1,4 @@
-package order;
+package com.domain.order;
 
 import com.domain.UniqueIdentifier;
 
