@@ -39,7 +39,32 @@ public class Order extends Aggregation<OrderID> implements Cloneable {
 
     @Override
     public void validate(ValidatorHandler handler) {
-         new OrderValidator(this, handler).validate();
+         new OrderValidator( this, handler).validate();
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public BigDecimal getOrderValue() {
+        return orderValue;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public Instant getCreated() {
+        return created;
+    }
+
+    public Instant getUpdated() {
+        return updated;
+    }
+
+    @Override
+    public OrderID getId() {
+        return super.getId();
     }
 
     @Override

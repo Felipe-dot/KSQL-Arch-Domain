@@ -1,16 +1,15 @@
 package com.domain.validator;
 
-import javax.xml.validation.ValidatorHandler;
 
 public abstract class Validator {
-    private final ValidatorHandler handler;
+    private final ValidationHandlerDomain handler;
 
-    protected Validator(ValidatorHandler handler) {
+    protected Validator(ValidationHandlerDomain handler) {
         this.handler = handler;
     }
 
     public abstract void validate();
-    protected ValidatorHandler validatorHandler() {
+    protected ValidationHandlerDomain validatorHandler() {
         return this.handler;
     }
 }
