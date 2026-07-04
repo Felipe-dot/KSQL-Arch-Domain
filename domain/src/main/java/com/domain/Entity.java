@@ -1,6 +1,6 @@
 package com.domain;
 
-import javax.xml.validation.ValidatorHandler;
+import com.domain.validator.ValidationHandlerDomain;
 import java.util.Objects;
 
 public abstract class Entity <ID  extends com.domain.UniqueIdentifier> {
@@ -10,7 +10,7 @@ public abstract class Entity <ID  extends com.domain.UniqueIdentifier> {
         this.id = id;
     }
     
-    public abstract void validate(ValidatorHandler handler);
+    public abstract void validate(ValidationHandlerDomain handler);
 
     public ID getId() {
         return id;

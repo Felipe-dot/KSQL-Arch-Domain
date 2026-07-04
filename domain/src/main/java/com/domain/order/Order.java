@@ -1,6 +1,7 @@
 package com.domain.order;
 
 import com.domain.Aggregation;
+import com.domain.validator.ValidationHandlerDomain;
 
 import javax.xml.validation.ValidatorHandler;
 import java.math.BigDecimal;
@@ -38,7 +39,7 @@ public class Order extends Aggregation<OrderID> implements Cloneable {
     }
 
     @Override
-    public void validate(ValidatorHandler handler) {
+    public void validate(ValidationHandlerDomain handler) {
          new OrderValidator( this, handler).validate();
     }
 
