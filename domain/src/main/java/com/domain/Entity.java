@@ -1,6 +1,6 @@
 package com.domain;
 
-import com.domain.validator.ValidationHandlerDomain;
+import com.domain.validators.ValidationHandlerDomain;
 import java.util.Objects;
 
 public abstract class Entity <ID  extends com.domain.UniqueIdentifier> {

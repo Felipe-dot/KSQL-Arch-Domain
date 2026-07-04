@@ -1,7 +1,7 @@
 package com.domain.order;
 
 import com.domain.Aggregation;
-import com.domain.validator.ValidationHandlerDomain;
+import com.domain.validators.ValidationHandlerDomain;
 
 import javax.xml.validation.ValidatorHandler;
 import java.math.BigDecimal;

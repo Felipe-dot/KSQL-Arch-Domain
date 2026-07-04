@@ -1,9 +1,9 @@
 package com.domain.order;
 
 
-import com.domain.validator.Error;
-import com.domain.validator.ValidationHandlerDomain;
-import com.domain.validator.Validator;
+import com.domain.validators.Error;
+import com.domain.validators.ValidationHandlerDomain;
+import com.domain.validators.Validator;
 
 
 public class OrderValidator extends Validator {
