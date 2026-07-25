@@ -1,4 +1,4 @@
-package com.application.order;
+package com.application.order.delete;
 
 import com.domain.order.OrderGateway;
 import com.domain.order.OrderID;
