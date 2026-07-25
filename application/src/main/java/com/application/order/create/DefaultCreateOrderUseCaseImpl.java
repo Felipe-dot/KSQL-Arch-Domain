@@ -31,8 +31,6 @@ public class DefaultCreateOrderUseCaseImpl extends CreateOrderUseCase {
             return CreateOrderOutput.withErrors(notification.getErrorsEntity());
 
         } else {
-            order.check(order.getId().valueId(), order.getOrderValue(),
-                    order.getChannel(), order.getPaymentStatus());
             return CreateOrderOutput.outPutFrom(orderGateway.persist(order));
         }
     }
