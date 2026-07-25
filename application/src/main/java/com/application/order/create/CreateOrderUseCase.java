@@ -1,4 +1,4 @@
-package com.application.order;
+package com.application.order.create;
 
 import com.application.UseCase;
 
