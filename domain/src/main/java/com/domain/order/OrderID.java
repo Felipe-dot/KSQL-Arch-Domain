@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class OrderID extends UniqueIdentifier {
+
     private final String value;
 
     public OrderID(String value) {
@@ -20,12 +21,16 @@ public class OrderID extends UniqueIdentifier {
         return new OrderID(uuid.toString().toLowerCase());
     }
 
+    public static OrderID from(String id) {
+        return new OrderID(id);
+    }
+
     @Override
     public boolean equals(Object obj) {
-       if(this == obj) return true;
-       if(obj == null || getClass() != obj.getClass()) return false;
-       final OrderID orderID = (OrderID) obj;
-       return value.equals(orderID);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        final OrderID orderID = (OrderID) obj;
+        return valueId().equals(orderID);
     }
 
     @Override
