@@ -23,6 +23,24 @@ public final class InfraStructureUtils {
     }
 
 
+    public static class LikeSpecification {
+        private final String property;
+        private final String value;
+
+        public LikeSpecification(String property, String value) {
+            this.property = property;
+            this.value = value;
+        }
+
+        public String getProperty() {
+            return property;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
     public static String convert(String parameter) {
         LikeSpecification likeSpecification = new LikeSpecification(" LIKE ", parameter);
         return likeSpecification.getProperty() + " '" + like(likeSpecification.getValue()) + "' ";
