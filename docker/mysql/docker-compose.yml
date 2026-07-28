@@ -1,0 +1,111 @@
+version: '3.8'
+services:
+  oms:
+    image: mysql:8.3
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --gtid-mode=ON
+      --enforce-gtid-consistency=ON
+      --log-bin=mysqld-bin
+      --binlog-format=ROW
+      --server-id=1
+    container_name: "oms"
+    restart: always
+    platform: linux/arm64
+    networks:
+      - database_network
+      - shared_network
+    environment:
+      MYSQL_DATABASE: 'oms'
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'nimda'
+      MYSQL_ROOT_PASSWORD: 'nimda'
+      MYSQL_TCP_PORT: 3308
+    volumes:
+      - ./dbs/oms:/var/lib/mysql
+    ports:
+      - "3308:3308"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 2
+        delay: 3s
+        window: 10s
+      resources:
+        limits:
+          cpus: "2"
+          memory: 512M
+        reservations:
+          cpus: "0.5"
+          memory: 256M
+
+  mysql_exporter:
+    image: prom/mysqld-exporter
+    container_name: "mysql_exporter"
+    networks:
+      - database_network
+      - shared_network
+    command:
+      - '--config.my-cnf=/etc/.my.cnf'
+    environment:
+      DATA_SOURCE_NAME: "admin:nimda@(oms:3308)/oms"
+    ports:
+      - "9104:9104"
+    volumes:
+      - ./my.cnf:/etc/.my.cnf
+    depends_on:
+      - oms
+
+  prometheus:
+    image: prom/prometheus
+    container_name: "prometheus"
+    networks:
+      - shared_network
+      - database_network
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana
+    container_name: "grafana"
+    networks:
+      - database_network
+      - shared_network
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=nimda
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    networks:
+      - database_network
+      - shared_network
+    ports:
+      - "8082:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+  node_exporter:
+    image: prom/node-exporter
+    networks:
+      - database_network
+      - shared_network
+    container_name: node_exporter
+    restart: always
+    ports:
+      - "9100:9100"
+
+networks:
+  database_network:
+    driver: bridge
+  shared_network:
+    external: true
+volumes:
+  grafana-storage:

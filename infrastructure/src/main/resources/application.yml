@@ -1,0 +1,81 @@
+logging:
+  level:
+    io.lettuce.core: DEBUG
+    org.springframework.data.redis: DEBUG
+
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+  application:
+    name: push-na-master-ksql-arch-domain # influencia no carregamento
+  profiles:
+    active: local
+  cloud:
+    config:
+      uri: 'http://localhost:8888'
+      #label: '${spring.profiles.active}'
+    compatibility-verifier-enabled: false
+  config:
+    import: 'optional:configserver:http://localhost:8888'
+
+  redis:
+    host: localhost
+    port: 6379
+    password: nimdapushnamaster
+    ssl: false
+    timeout: 10000
+    database: 0
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: false
+  datasource:
+    hikari:
+      auto-commit: false
+      connection-timeout: 30000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+      minimum-idle: 10
+      idle-timeout: 600000
+      pool-name: push-na-master
+    url: jdbc:mysql://localhost:3308/oms
+    username: pushnamaster
+    password: nimda@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: order-consumer-os
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      max-poll-records: 50
+      max-poll-interval-ms: 300000
+      fetch-max-wait-ms: 10000
+      fetch-min-size: 548576
+      heartbeat-interval-ms: 3000
+      session-timeout-ms: 10000
+      ack-mode: manual_immediate
+server:
+  port: ${PORT:8085}
+  servlet:
+    context-path: /api
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,busrefresh,refresh
+  endpoint:
+    health:
+      show-details: always
